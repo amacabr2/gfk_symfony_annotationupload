@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Post
@@ -42,6 +43,10 @@ class Post
      */
     private $filename;
 
+    /**
+     * @var File
+     */
+    private $file;
 
     /**
      * Get id
@@ -123,6 +128,26 @@ class Post
     public function getFilename()
     {
         return $this->filename;
+    }
+
+    /**
+     * @return File | null
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param File $file | null
+     *
+     * @return $this
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+
+        return $this;
     }
 }
 
