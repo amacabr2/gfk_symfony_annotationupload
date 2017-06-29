@@ -1,4 +1,4 @@
 services:
-#    upload.example:
-#        class: Amacabr2\UploadBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    upload.annotation_reader:
+        class: Amacabr2\UploadBundle\Annotation\UploadAnnotationReader
+        arguments: ["@annotations.reader"]
