@@ -4,11 +4,9 @@ namespace Amacabr2\UploadBundle\Listener;
 
 
 use Amacabr2\UploadBundle\Annotation\UploadAnnotationReader;
+use Amacabr2\UploadBundle\Handler\UploadHandler;
 use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventSubscriber;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class UploadSubscriber implements EventSubscriber {
 
@@ -17,8 +15,19 @@ class UploadSubscriber implements EventSubscriber {
      */
     private $reader;
 
-    public function __construct(UploadAnnotationReader $reader) {
+    /**
+     * @var UploadHandler
+     */
+    private $handler;
+
+    /**
+     * UploadSubscriber constructor.
+     * @param UploadAnnotationReader $reader
+     * @param UploadHandler $handler
+     */
+    public function __construct(UploadAnnotationReader $reader, UploadHandler $handler) {
         $this->reader = $reader;
+        $this->handler = $handler;
     }
 
     /**
@@ -39,13 +48,7 @@ class UploadSubscriber implements EventSubscriber {
     public function prePersist(EventArgs $event) {
         $entity = $event->getEntity();
         foreach ($this->reader->getUploadbleFields($entity) as $property => $annotation) {
-            $accessor = PropertyAccess::createPropertyAccessor();
-            $file = $accessor->getValue($entity, $property);
-            if ($file instanceof UploadedFile) {
-                $filename = $file->getClientOriginalName();
-                $file->move($annotation->getPath(), $filename);
-                $accessor->setValue($entity, $annotation->getFilename(), $filename);
-            }
+            $this->handler->uploadFile($entity, $property, $annotation);
         }
     }
 
@@ -55,10 +58,7 @@ class UploadSubscriber implements EventSubscriber {
     public function postLoad(EventArgs $event) {
         $entity = $event->getEntity();
         foreach ($this->reader->getUploadbleFields($entity) as $property => $annotation) {
-            $accessor = PropertyAccess::createPropertyAccessor();
-            $filename = $accessor->getValue($entity, $annotation->getFilename());
-            $file = new File($annotation->getPath() . DIRECTORY_SEPARATOR . $filename);
-            $accessor->setValue($entity, $property, $file);
+            $this->handler->setFileFromFilename($entity, $property, $annotation);
         }
     }
 
