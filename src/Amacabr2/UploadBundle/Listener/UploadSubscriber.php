@@ -6,6 +6,7 @@ namespace Amacabr2\UploadBundle\Listener;
 use Amacabr2\UploadBundle\Annotation\UploadAnnotationReader;
 use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventSubscriber;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -27,7 +28,8 @@ class UploadSubscriber implements EventSubscriber {
      */
     public function getSubscribedEvents() {
         return [
-            'prePersist'
+            'prePersist',
+            'postLoad',
         ];
     }
 
@@ -44,6 +46,19 @@ class UploadSubscriber implements EventSubscriber {
                 $file->move($annotation->getPath(), $filename);
                 $accessor->setValue($entity, $annotation->getFilename(), $filename);
             }
+        }
+    }
+
+    /**
+     * @param EventArgs $event
+     */
+    public function postLoad(EventArgs $event) {
+        $entity = $event->getEntity();
+        foreach ($this->reader->getUploadbleFields($entity) as $property => $annotation) {
+            $accessor = PropertyAccess::createPropertyAccessor();
+            $filename = $accessor->getValue($entity, $annotation->getFilename());
+            $file = new File($annotation->getPath() . DIRECTORY_SEPARATOR . $filename);
+            $accessor->setValue($entity, $property, $file);
         }
     }
 

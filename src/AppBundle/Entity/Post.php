@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Amacabr2\UploadBundle\Annotation\UploadableField;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Amacabr2\UploadBundle\Annotation\Uploadable;
 
@@ -47,9 +48,8 @@ class Post
     private $filename;
 
     /**
-     * @var File
-     *
      * @UploadableField(filename="filename", path="uploads")
+     * @Assert\Image(maxWidth="1000", maxHeight="1000")
      */
     private $file;
 

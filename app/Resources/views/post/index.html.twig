@@ -22,7 +22,9 @@
                     <td><a href="{{ path('post_show', { 'id': post.id }) }}">{{ post.id }}</a></td>
                     <td>{{ post.name }}</td>
                     <td>{{ post.content }}</td>
-                    <td>{{ post.filename }}</td>
+                    <td>
+                        <img src="{{ asset(post.file.pathname) }}" width="150">
+                    </td>
                     <td>
                         <ul>
                             <li>
