@@ -6,3 +6,4 @@ var/
 /web/bundles/
 .idea/
 vendor/
+bin/
