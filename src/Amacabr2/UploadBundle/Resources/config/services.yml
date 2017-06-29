@@ -3,7 +3,7 @@ services:
         class: Amacabr2\UploadBundle\Annotation\UploadAnnotationReader
         arguments: ["@annotations.reader"]
     upload.handler:
-        class: Amacabr2\UploadBundle\Handler\UploadUHandler
+        class: Amacabr2\UploadBundle\Handler\UploadHandler
     upload.subscriber:
         class: Amacabr2\UploadBundle\Listener\UploadSubscriber
         arguments: ['@upload.annotation_reader', "@upload.handler"]

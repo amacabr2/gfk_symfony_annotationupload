@@ -54,6 +54,12 @@ class Post
     private $file;
 
     /**
+     * @var \DateTime
+     * @ORM\Column(name="udated_at", type="datetime", nullable=true)
+     */
+    private $updateAt;
+
+    /**
      * Get id
      *
      * @return int
@@ -146,11 +152,30 @@ class Post
     /**
      * @param File $file | null
      *
-     * @return $this
+     * @return Post
      */
     public function setFile($file)
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime | null
+     */
+    public function getUpdateAt()
+    {
+        return $this->updateAt;
+    }
+
+    /**
+     * @param mixed $updateAt
+     * @return Post
+     */
+    public function setUpdateAt($updateAt)
+    {
+        $this->updateAt = $updateAt;
 
         return $this;
     }

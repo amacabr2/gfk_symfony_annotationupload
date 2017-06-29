@@ -21,6 +21,11 @@ class UploadHandler {
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
+    /**
+     * @param $entity
+     * @param $property
+     * @param $annotation
+     */
     public function uploadFile($entity, $property, $annotation) {
         $file = $this->accessor->getValue($entity, $property);
         if ($file instanceof UploadedFile) {
@@ -30,10 +35,36 @@ class UploadHandler {
         }
     }
 
+    /**
+     * @param $entity
+     * @param $property
+     * @param $annotation
+     */
     public function setFileFromFilename($entity, $property, $annotation) {
-        $filename = $this->accessor->getValue($entity, $annotation->getFilename());
-        $file = new File($annotation->getPath() . DIRECTORY_SEPARATOR . $filename);
+        $file = $this->getFileFromFilename($entity, $annotation);
         $this->accessor->setValue($entity, $property, $file);
+    }
+
+    /**
+     * @param $entity
+     * @param $annotation
+     */
+    public function removeOldFile($entity, $annotation) {
+        $file = $this->getFileFromFilename($entity, $annotation);
+        if ($file !== null) unlink($file->getRealPath());
+    }
+
+    /**
+     * @param $entity
+     * @param $annotation
+     * @return File | null
+     */
+    private function getFileFromFilename($entity, $annotation) {
+        $filename = $this->accessor->getValue($entity, $annotation->getFilename());
+        if (empty($filename)) {
+            return null;
+        }
+        return new File($annotation->getPath() . DIRECTORY_SEPARATOR . $filename);
     }
 
 }

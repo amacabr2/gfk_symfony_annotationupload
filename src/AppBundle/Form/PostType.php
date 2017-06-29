@@ -17,7 +17,7 @@ class PostType extends AbstractType
         $builder
             ->add('name')
             ->add('content', null, ['required' => false])
-            ->add('file', FileType::class);
+            ->add('file', FileType::class, ['required' => false]);
     }
     
     /**
