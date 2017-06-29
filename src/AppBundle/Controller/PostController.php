@@ -49,7 +49,7 @@ class PostController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
-
+            $this->addFlash('success', "Article crée");
             return $this->redirectToRoute('post_show', array('id' => $post->getId()));
         }
 
@@ -90,7 +90,7 @@ class PostController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $post->setUpdateAt(new \DateTime());
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success', "Article modifié");
             return $this->redirectToRoute('post_edit', array('id' => $post->getId()));
         }
 
@@ -118,6 +118,7 @@ class PostController extends Controller
             $em->flush();
         }
 
+        $this->addFlash('success', "Article effacé");
         return $this->redirectToRoute('post_index');
     }
 
