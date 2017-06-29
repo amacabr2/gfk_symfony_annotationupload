@@ -40,6 +40,7 @@ class UploadSubscriber implements EventSubscriber {
             'prePersist',
             'preUpdate',
             'postLoad',
+            'postRemove'
         ];
     }
 
@@ -55,6 +56,16 @@ class UploadSubscriber implements EventSubscriber {
      */
     public function preUpdate(EventArgs $event) {
         $this->preEvent($event);
+    }
+
+    /**
+     * @param EventArgs $event
+     */
+    public function postRemove(EventArgs $event) {
+        $entity = $event->getEntity();
+        foreach ($this->reader->getUploadbleFields($entity) as $property => $annotation) {
+            $this->handler->removeFile($entity, $property);
+        }
     }
 
     /**

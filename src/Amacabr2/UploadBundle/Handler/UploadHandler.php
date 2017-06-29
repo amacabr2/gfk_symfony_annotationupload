@@ -51,7 +51,20 @@ class UploadHandler {
      */
     public function removeOldFile($entity, $annotation) {
         $file = $this->getFileFromFilename($entity, $annotation);
-        if ($file !== null) unlink($file->getRealPath());
+        if ($file !== null) {
+            @unlink($file->getRealPath());
+        }
+    }
+
+    /**
+     * @param $entity
+     * @param $property
+     */
+    public function removeFile($entity, $property) {
+        $file = $this->accessor->getValue($entity, $property);
+        if ($file instanceof File) {
+            @unlink($file->getRealPath());
+        }
     }
 
     /**
