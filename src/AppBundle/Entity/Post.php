@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Amacabr2\UploadBundle\Annotation\UploadableField;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Amacabr2\UploadBundle\Annotation\Uploadable;
@@ -47,6 +48,8 @@ class Post
 
     /**
      * @var File
+     *
+     * @UploadableField(filename="filename", path="uploads")
      */
     private $file;
 
