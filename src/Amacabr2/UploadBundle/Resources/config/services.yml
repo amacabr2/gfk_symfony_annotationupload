@@ -2,3 +2,8 @@ services:
     upload.annotation_reader:
         class: Amacabr2\UploadBundle\Annotation\UploadAnnotationReader
         arguments: ["@annotations.reader"]
+    upload.subscriber:
+        class: Amacabr2\UploadBundle\Listener\UploadSubscriber
+        arguments: ['@upload.annotation_reader']
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

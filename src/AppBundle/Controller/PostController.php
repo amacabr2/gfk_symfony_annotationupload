@@ -44,8 +44,6 @@ class PostController extends Controller
         $form = $this->createForm('AppBundle\Form\PostType', $post);
         $form->handleRequest($request);
 
-        dump($this->get('upload.annotation_reader')->getUploadbleFields($post));
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
