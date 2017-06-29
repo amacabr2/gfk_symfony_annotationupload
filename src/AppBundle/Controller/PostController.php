@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Amacabr2\UploadBundle\Annotation\Uploadable;
 use AppBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
