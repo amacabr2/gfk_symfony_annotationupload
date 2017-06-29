@@ -2,23 +2,33 @@
 
 {% block body %}
 
-    <h1>Post edit</h1>
+    <div class="page-header">
+        <h1>Post edit</h1>
+    </div>
 
-    <img src="{{ asset(post.file.pathname) }}" width="150">
+    <div class="row">
+        <div class="col-lg-6">
+            <img src="{{ asset(post.file.pathname) }}" width="150">
+        </div>
+        <div class="col-lg-6">
+            <div class="row little-row">
+                <a class="btn btn-default" href="{{ path('post_index') }}">Back to the list</a><br>
+            </div>
+            <div class="row little-row">
+                {{ form_start(delete_form) }}
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                {{ form_end(delete_form) }}
+            </div>
+        </div>
+    </div>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+   <div class="row">
+       <div class="col-lg-8">
+           {{ form_start(edit_form) }}
+               {{ form_widget(edit_form) }}
+               <input class="btn btn-primary" type="submit" value="Edit" />
+           {{ form_end(edit_form) }}
+       </div>
+   </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('post_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
 {% endblock %}
