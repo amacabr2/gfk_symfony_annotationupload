@@ -74,7 +74,6 @@ class UploadSubscriber implements EventSubscriber {
     private function preEvent(EventArgs $event) {
         $entity = $event->getEntity();
         foreach ($this->reader->getUploadbleFields($entity) as $property => $annotation) {
-            $this->handler->removeOldFile($entity, $annotation);
             $this->handler->uploadFile($entity, $property, $annotation);
         }
     }

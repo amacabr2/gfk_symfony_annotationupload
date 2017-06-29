@@ -29,6 +29,7 @@ class UploadHandler {
     public function uploadFile($entity, $property, $annotation) {
         $file = $this->accessor->getValue($entity, $property);
         if ($file instanceof UploadedFile) {
+            $this->removeOldFile($entity, $annotation);
             $filename = $file->getClientOriginalName();
             $file->move($annotation->getPath(), $filename);
             $this->accessor->setValue($entity, $annotation->getFilename(), $filename);
@@ -77,7 +78,7 @@ class UploadHandler {
         if (empty($filename)) {
             return null;
         }
-        return new File($annotation->getPath() . DIRECTORY_SEPARATOR . $filename);
+        return new File($annotation->getPath() . DIRECTORY_SEPARATOR . $filename, false);
     }
 
 }
